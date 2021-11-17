@@ -62,6 +62,7 @@ function init() {
   // レイキャストを作成
   const raycaster = new THREE.Raycaster();
 
+
   canvas.addEventListener('click', handleMouseMove);
   
   // マウスを動かしたときのイベント
@@ -77,18 +78,12 @@ function init() {
     // -1〜+1の範囲で現在のマウス座標を登録する
     mouse.x = (x / w) * 2 - 1;
     mouse.y = -(y / h) * 2 + 1;
-  }
-  
-  tick();
 
-  // 毎フレーム時に実行されるループイベントです
-  function tick() {
     // レイキャスト = マウス位置からまっすぐに伸びる光線ベクトルを生成
     raycaster.setFromCamera(mouse, camera);
 
     // その光線とぶつかったオブジェクトを得る
     const intersects = raycaster.intersectObjects(meshList);
-
     meshList.map((mesh) => {
       // 交差しているオブジェクトが1つ以上存在し、
       // 交差しているオブジェクトの1番目(最前面)のものだったら
@@ -96,14 +91,25 @@ function init() {
         // 色を赤くする
         mesh.material.color.setHex(0xff0000);
         console.log(mesh.name);
+        
+        
       } else {
         // それ以外は元の色にする
         mesh.material.color.setHex(0xffffff);
       }
+    
+ 
     });
 
+  }
+
+  tick();
+
+  // 毎フレーム時に実行されるループイベントです
+  function tick() {
     // レンダリング
     renderer.render(scene, camera);
     requestAnimationFrame(tick);
   }
+  
 }
